@@ -339,7 +339,7 @@ export default {
         axios.defaults.baseURL = "https://" + this.config.server + "/api/v1/";
 
         axios
-          .get("user")
+          .get("@me")
           .then(function(response) {
             vm.accounts.fourSucres.connecting = false;
             vm.accounts.fourSucres.connected = true;
