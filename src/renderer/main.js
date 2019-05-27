@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import App from './App'
+import {version} from '../../package.json';
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
@@ -33,7 +34,7 @@ Vue.component('font-awesome-layers', FontAwesomeLayers)
 
 let config = {};
 
-config.version = process.env.npm_package_version;
+config.version = version;
 config.server = (process.env.NODE_ENV !== 'production') ? '4sucres.localhost' : config.server = '4sucres.org';
 
 Vue.mixin({
