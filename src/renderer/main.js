@@ -2,6 +2,15 @@ import Vue from 'vue'
 import axios from 'axios'
 import App from './App'
 import {version} from '../../package.json';
+import { remote } from 'electron'
+
+remote.globalShortcut.register('CommandOrControl+Shift+I', () => {
+  remote.BrowserWindow.getFocusedWindow().webContents.openDevTools()
+})
+
+window.addEventListener('beforeunload', () => {
+  remote.globalShortcut.unregisterAll()
+})
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
