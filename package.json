@@ -17,7 +17,7 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "discord-4sucres-connector",
+    "productName": "Connecteur 4sucres-Discord",
     "appId": "org.4sucres.discord-connector",
     "directories": {
       "output": "build"
@@ -44,7 +44,8 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "target": "portable"
     },
     "linux": {
       "icon": "build/icons"
