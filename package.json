@@ -1,6 +1,6 @@
 {
   "name": "discord-4sucres-connector",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Simon MGK <contact@mgkprod.fr>",
   "description": "Send your Discord guilds emojis on 4sucres",
   "license": null,

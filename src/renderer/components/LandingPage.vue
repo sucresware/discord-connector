@@ -17,16 +17,16 @@
                   src="@/assets/img/discord-connector.png"
                   class="img-fluid"
                   style="width: 80px;"
-                >
+                />
               </div>
               <div class="col">
                 <h1 class="h5 mb-0">Connecteur 4sucres-Discord</h1>
                 <span class="text-muted">{{ config.version }}</span>
-                <br>
+                <br />
                 <div class="mt-3">
                   <button class="btn btn-primary btn-sm" @click="gotoPage(2)">
                     Ah oui oui
-                    <font-awesome-icon icon="angle-right"/>
+                    <font-awesome-icon icon="angle-right" />
                   </button>
                 </div>
               </div>
@@ -53,7 +53,7 @@
           <div class="text-right">
             <button class="btn btn-primary" @click="gotoPage(3)">
               Je prends la main
-              <font-awesome-icon icon="angle-right"/>
+              <font-awesome-icon icon="angle-right" />
             </button>
           </div>
         </div>
@@ -119,7 +119,7 @@
                     placeholder="oGyw2AaPwiwO9FBIPEiBNNuYTPJvmNCClpyariSf"
                     type="text"
                     :disabled="accounts.fourSucres.connecting || accounts.fourSucres.connected "
-                  >
+                  />
 
                   <div
                     class="p-1 text-danger"
@@ -128,7 +128,7 @@
                 </div>
               </div>
             </div>
-            <hr class="m-0">
+            <hr class="m-0" />
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-auto pr-0">
@@ -178,7 +178,7 @@
                     placeholder="NNuYTPJvmNCClpyariSfoGyw2AaPwiwO9FBIPEiB"
                     type="text"
                     :disabled="accounts.discord.connecting || accounts.discord.connected"
-                  >
+                  />
                   <div
                     class="p-1 text-danger"
                     v-show="accounts.discord.hasError"
@@ -190,7 +190,7 @@
           <div class="text-right">
             <button class="btn btn-primary" @click="connect()">
               Valider
-              <font-awesome-icon icon="check"/>
+              <font-awesome-icon icon="check" />
             </button>
           </div>
         </div>
@@ -204,11 +204,11 @@
         >
           <div class="text-left">
             <div class="mb-5 mx-auto" style="width: 350px">
-              <FourSucresLogo/>
+              <FourSucresLogo />
             </div>
             <div class="row align-items-center">
               <div class="col-auto">
-                <font-awesome-icon icon="sync" spin size="2x"/>
+                <font-awesome-icon icon="sync" spin size="2x" />
               </div>
               <div class="col">
                 <h1 class="h5 mb-0">Échanges en cours</h1>
@@ -229,11 +229,11 @@
         >
           <div class="text-left">
             <div class="mb-5 mx-auto" style="width: 350px">
-              <FourSucresLogo/>
+              <FourSucresLogo />
             </div>
             <div class="row align-items-center">
               <div class="col-auto">
-                <font-awesome-icon icon="check" size="2x"/>
+                <font-awesome-icon icon="check" size="2x" />
               </div>
               <div class="col">
                 <h1 class="h5 mb-0 text-success">Synchronisation terminée !</h1>
@@ -252,11 +252,11 @@
         >
           <div class="text-left">
             <div class="mb-5 mx-auto" style="width: 350px">
-              <FourSucresLogo/>
+              <FourSucresLogo />
             </div>
             <div class="row align-items-center">
               <div class="col-auto">
-                <font-awesome-icon icon="times" size="2x"/>
+                <font-awesome-icon icon="times" size="2x" />
               </div>
               <div class="col">
                 <h1 class="h5 mb-0 text-danger">Erreur !</h1>
@@ -333,9 +333,9 @@ export default {
         axios.defaults.headers.common["Content-Type"] =
           "application/x-www-form-urlencoded";
         axios.defaults.headers.common["Accept"] = "application/json";
-        axios.defaults.headers.common["Authorization"] = `Bearer ${
-          this.accounts.fourSucres.token
-        }`;
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${this.accounts.fourSucres.token}`;
         axios.defaults.baseURL = "https://" + this.config.server + "/api/v1/";
 
         axios
@@ -396,30 +396,34 @@ export default {
           this.gotoPage(6);
         }
 
+        let postEmojis = [];
+
         for (const emoji of guild[1].emojis) {
-          this.loading.status =
-            "Serveur : " +
-            guild[1].name +
-            "<br>Emoji : <code>:" +
-            emoji[1].name +
-            ":</code>";
-          try {
-            await axios({
-              url: "discord-emojis",
-              method: "post",
-              data: {
-                id: emoji[0],
-                name: emoji[1].name,
-                animated: emoji[1].animated,
-                deleted: emoji[1].deleted,
-                guild_id: guild[0]
-              }
-            });
-          } catch (error) {
-            console.log(error);
-            this.gotoPage(6);
-          }
+          postEmojis.push({
+            id: emoji[0],
+            name: emoji[1].name,
+            animated: emoji[1].animated,
+            deleted: emoji[1].deleted,
+          });
         }
+
+        if (postEmojis.length) {
+          this.loading.status = "Serveur : " + guild[1].name;
+
+          try {
+              await axios({
+                url: "discord-emojis",
+                method: "post",
+                data: {
+                  guild_id: guild[0],
+                  emojis: postEmojis
+                }
+              });
+            } catch (error) {
+              console.log(error);
+              this.gotoPage(6);
+            }
+          }
       }
 
       this.gotoPage(5);
